@@ -5,26 +5,26 @@ import org.apache.ibatis.annotations.Select;
 
 public interface MovieAndTimeStatisticsMapper {
     // 统计某一年的电影数量
-    @Select("SELECT COUNT(*) FROM movie_release_time_relation mrt " +
-            "INNER JOIN times t ON mrt.time_id = t.time_id " +
-            "WHERE t.year = #{year}")
-    int countMoviesByYear(@Param("year") int year);
-
-    // 统计某一年某一月的电影数量
-    @Select("SELECT COUNT(*) FROM movie_release_time_relation mrt " +
-            "INNER JOIN times t ON mrt.time_id = t.time_id " +
-            "WHERE t.year = #{year} AND t.month = #{month}")
-    int countMoviesByYearAndMonth(@Param("year") int year, @Param("month") int month);
-
-    // 统计某一年某一季度的电影数量
-    @Select("SELECT COUNT(*) FROM movie_release_time_relation mrt " +
-            "INNER JOIN times t ON mrt.time_id = t.time_id " +
-            "WHERE t.year = #{year} AND t.season = #{season}")
-    int countMoviesByYearAndSeason(@Param("year") int year, @Param("season") int season);
-
-    // 统计特定星期几的新增电影数量
-    @Select("SELECT COUNT(*) FROM movie_release_time_relation mrt " +
-            "INNER JOIN times t ON mrt.time_id = t.time_id " +
-            "WHERE t.weekday = #{weekday}")
-    int countMoviesByWeekday(@Param("weekday") int weekday);
+    @Select("<script>" +
+                "SELECT COUNT(*) FROM movie_release_time_relation mrt " +
+                "INNER JOIN times t ON mrt.time_id = t.time_id " +
+                "<where>" +
+                    "<if test='year != null'>" +
+                    "AND t.year = #{year} " +
+                    "</if>" +
+                    "<if test='month != null'>" +
+                    "AND t.month = #{month} " +
+                    "</if>" +
+                    "<if test='season != null'>" +
+                    "AND t.season = #{season} " +
+                    "</if>" +
+                    "<if test='weekday != null'>" +
+                    "AND t.weekday = #{weekday} " +
+                    "</if>" +
+                "</where>" +
+            "</script>")
+    int countMovies(@Param("year") Integer year,
+                    @Param("month") Integer month,
+                    @Param("season") Integer season,
+                    @Param("weekday") Integer weekday);
 }

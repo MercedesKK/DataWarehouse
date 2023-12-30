@@ -12,13 +12,9 @@ public class MovieAndTimeStatisticsController {
     @Autowired
     private MovieAndTimeStatisticsService movieAndTimeStatisticsService;
 
-    @GetMapping
-    public ComResponse<MovieAndTimeStatistics> getMoiveStatistics(@RequestBody MovieAndTimeStatistics movieAndTimeStatistics) {
-        int result = movieAndTimeStatisticsService.getMovieStatistics(movieAndTimeStatistics);
-        if (result == -1) {
-            return ComResponse.error("Invalid arguments for statistics.");
-        } else {
-            return ComResponse.success(result);
-        }
+    @GetMapping("/count")
+    public ComResponse<MovieAndTimeStatistics> countMovies(@RequestBody MovieAndTimeStatistics movieAndTimeStatistics) {
+        int result = movieAndTimeStatisticsService.countMovies(movieAndTimeStatistics);
+        return ComResponse.success(result);
     }
 }
