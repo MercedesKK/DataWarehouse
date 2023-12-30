@@ -20,6 +20,9 @@ public class multiController {
 
     @GetMapping
     public ComResponse<List<MovieVo>> getMultiQueryResult(@RequestBody MultiQueryDto multiQueryDto) {
-        return ComResponse.success(movieMultiService.getMultiQueryResult(multiQueryDto));
+        long startTime = System.currentTimeMillis();
+        List<MovieVo> result = movieMultiService.getMultiQueryResult(multiQueryDto);
+        long endTime = System.currentTimeMillis();
+        return ComResponse.success(result, endTime - startTime);
     }
 }

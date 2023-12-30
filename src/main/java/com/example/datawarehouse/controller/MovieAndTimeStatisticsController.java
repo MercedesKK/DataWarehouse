@@ -14,7 +14,9 @@ public class MovieAndTimeStatisticsController {
 
     @GetMapping("/count")
     public ComResponse<MovieAndTimeStatistics> countMovies(@RequestBody MovieAndTimeStatistics movieAndTimeStatistics) {
+        long startTime = System.currentTimeMillis();
         int result = movieAndTimeStatisticsService.countMovies(movieAndTimeStatistics);
-        return ComResponse.success(result);
+        long endTime = System.currentTimeMillis();
+        return ComResponse.success(result, endTime - startTime);
     }
 }

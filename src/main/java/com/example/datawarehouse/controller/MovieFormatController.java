@@ -1,6 +1,7 @@
 package com.example.datawarehouse.controller;
 
 import com.example.datawarehouse.service.MovieFormatsService;
+import com.example.datawarehouse.utils.ComResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,8 +27,11 @@ public class MovieFormatController {
     }
 
     @GetMapping
-    public int getMovieCountByFormat(@RequestBody FormatVo formatVo) {
-        return movieFormatsService.getMovieFormatCountByTitle(formatVo.getFormatName());
+    public ComResponse<Integer> getMovieCountByFormat(@RequestBody FormatVo formatVo) {
+        long startTime = System.currentTimeMillis();
+        int result = movieFormatsService.getMovieFormatCountByTitle(formatVo.getFormatName());
+        long endTime = System.currentTimeMillis();
+        return ComResponse.success(result, endTime - startTime);
     }
 
 }

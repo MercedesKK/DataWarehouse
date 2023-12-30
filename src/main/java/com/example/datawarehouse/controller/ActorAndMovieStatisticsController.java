@@ -17,13 +17,17 @@ public class ActorAndMovieStatisticsController {
 
     @GetMapping("/starring")
     public ComResponse<Integer> getMovieCountByActor(@RequestBody ActorQueryDto actorQueryDto) {
+        long startTime = System.currentTimeMillis();
         int result = actorAndMovieStatisticsService.countMoviesByActor(actorQueryDto);
-        return ComResponse.success(result);
+        long endTime = System.currentTimeMillis();
+        return ComResponse.success(result, endTime - startTime);
     }
 
     @GetMapping("/supporting")
     public ComResponse<Integer> getMovieCountByActorSupporting(@RequestBody ActorQueryDto actorQueryDto) {
+        long startTime = System.currentTimeMillis();
         int result = actorAndMovieStatisticsService.countMoviesByActorSupporting(actorQueryDto);
-        return ComResponse.success(result);
+        long endTime = System.currentTimeMillis();
+        return ComResponse.success(result, endTime - startTime);
     }
 }

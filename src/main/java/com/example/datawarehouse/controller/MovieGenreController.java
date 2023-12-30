@@ -31,6 +31,9 @@ public class MovieGenreController {
 
     @GetMapping
     public ComResponse<Integer> getMovieCountByGenre(@RequestBody GenreMovieVo genreMovieVo) {
-        return ComResponse.success(movieGerneService.getMovieCountByGenre(genreMovieVo.getGenreName()));
+        long startTime = System.currentTimeMillis();
+        int result = movieGerneService.getMovieCountByGenre(genreMovieVo.getGenreName());
+        long endTime = System.currentTimeMillis();
+        return ComResponse.success(result, endTime - startTime);
     }
 }

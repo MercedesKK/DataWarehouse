@@ -11,10 +11,11 @@ import lombok.Data;
 @Builder
 public class ComResponse<T> {
 
-    public static <T> ComResponse success(T data) {
+    public static <T> ComResponse success(T data, Long runTime) {
         return ComResponse.builder()
                 .code(ResponseCode.SUCCESS.getCode())
                 .msg(ResponseCode.SUCCESS.getMessage())
+                .runTime(runTime)
                 .data(data).build();
     }
 
@@ -77,10 +78,13 @@ public class ComResponse<T> {
 
     private T data;
 
-    public ComResponse(Integer code, String msg, T data) {
+    private Long runTime;
+
+    public ComResponse(Integer code, String msg, T data, Long runTime) {
         this.code  = code;
         this.msg   = msg;
         this.data  = data;
+        this.runTime = runTime;
     }
 
     public ComResponse(){}
