@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/api/collaborationmovies")
 public class CollaborationMovieController {
@@ -17,6 +20,15 @@ public class CollaborationMovieController {
 
     public static class CollaborationQueryVo {
         private int limit;
+        private int genreId;
+
+        public int getGenreId() {
+            return genreId;
+        }
+
+        public void setGenreId(int genreId) {
+            this.genreId = genreId;
+        }
 
         public int getLimit() {
             return limit;
@@ -35,5 +47,10 @@ public class CollaborationMovieController {
     @GetMapping("/directorandactor")
     public ComResponse<CollaborationQueryDto> getFrequentDirectorActorCollaborations(@RequestBody CollaborationQueryVo collaborationQueryVo) {
         return ComResponse.success(collaborationMovieService.getFrequentDirectorActorCollaborations(collaborationQueryVo.getLimit()));
+    }
+
+    @GetMapping("/mostpopular")
+    public ComResponse<Map<String, Objects>> getMostPopularActorPairByGenre(@RequestBody CollaborationQueryVo collaborationQueryVo) {
+        return ComResponse.success(collaborationMovieService.getMostPopularActorPairByGenre(collaborationQueryVo.getGenreId()));
     }
 }

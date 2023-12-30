@@ -14,4 +14,8 @@ public class ActorAndMovieStatisticsService {
         System.out.println(queryDTO.getActorName());
         return actorAndMovieStatisticMapper.countMoviesByActor(queryDTO.getActorName());
     }
+
+    public int countMoviesByActorSupporting(ActorQueryDto queryDTO) {
+        return actorAndMovieStatisticMapper.countMoviesByActorSupporting(queryDTO.getActorName());
+    }
 }

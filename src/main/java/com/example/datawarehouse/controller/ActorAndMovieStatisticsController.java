@@ -15,9 +15,15 @@ public class ActorAndMovieStatisticsController {
     @Autowired
     private ActorAndMovieStatisticsService actorAndMovieStatisticsService;
 
-    @GetMapping
+    @GetMapping("/starring")
     public ComResponse<Integer> getMovieCountByActor(@RequestBody ActorQueryDto actorQueryDto) {
         int result = actorAndMovieStatisticsService.countMoviesByActor(actorQueryDto);
+        return ComResponse.success(result);
+    }
+
+    @GetMapping("/supporting")
+    public ComResponse<Integer> getMovieCountByActorSupporting(@RequestBody ActorQueryDto actorQueryDto) {
+        int result = actorAndMovieStatisticsService.countMoviesByActorSupporting(actorQueryDto);
         return ComResponse.success(result);
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CollaborationMovieService {
@@ -18,5 +19,9 @@ public class CollaborationMovieService {
 
     public List<CollaborationQueryDto> getFrequentDirectorActorCollaborations(int limit) {
         return collaborationMovieMapper.findFrequentDirectorActorCollaborations(limit);
+    }
+
+    public Map<String, Object> getMostPopularActorPairByGenre(int genreId) {
+        return collaborationMovieMapper.findMostPopularActorPairByGenre(genreId);
     }
 }
