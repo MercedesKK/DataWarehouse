@@ -75,4 +75,25 @@ public interface MoviesMapper {
             @Param("minCommentNum") Integer minCommentNum,
             @Param("maxCommentNum") Integer maxCommentNum
     );
+
+    @Select("SELECT m.movie_id " +
+            "FROM movies m " +
+            "JOIN genres_relation gr ON m.movie_id = gr.movie_id " +
+            "JOIN genres g ON gr.genre_id = g.genre_id " +
+            "WHERE g.genre_name = #{genreName} " +
+            "ORDER BY m.comment_num DESC " +
+            "LIMIT 1")
+    Integer findTopMovieByGenre(@Param("genreName") String genreName);
+
+    @Select("SELECT a.actor_name " +
+            "FROM (" +
+            "    SELECT actor_id FROM starring_relation WHERE movie_id = #{movieId} " +
+            "    UNION " +
+            "    SELECT actor_id FROM supporting_relation WHERE movie_id = #{movieId} " +
+            ") AS combined_actors " +
+            "JOIN actors a ON combined_actors.actor_id = a.actor_id " +
+            "ORDER BY a.actor_id " +
+            "LIMIT #{peopleNum}")
+    List<String> findTopActorsByMovie(@Param("movieId") Integer movieId, @Param("peopleNum") int peopleNum);
+
 }

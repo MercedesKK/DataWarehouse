@@ -27,13 +27,28 @@ public class CollaborationMovieController {
     public static class CollaborationQueryVo {
         private int limit;
         private int genreId;
+        private String genreName;
+        private int peopleNum;
 
+        public int getPeopleNum() {
+            return peopleNum;
+        }
+        public void setPeopleNum(int peopleNum) {
+            this.peopleNum = peopleNum;
+        }
         public int getGenreId() {
             return genreId;
         }
 
         public void setGenreId(int genreId) {
             this.genreId = genreId;
+        }
+        public String getGenreName() {
+            return genreName;
+        }
+
+        public void setGenreName(String genreName) {
+            this.genreName = genreName;
         }
 
         public int getLimit() {
@@ -75,6 +90,14 @@ public class CollaborationMovieController {
         System.out.println(newCollborationDto);
         long startTime = System.currentTimeMillis();
         List<CollaVo> response = newCollborationService.findNewCollaboration(newCollborationDto);
+        long endTime = System.currentTimeMillis();
+        return ComResponse.success(response, endTime - startTime);
+    }
+
+    @GetMapping("/newmostpopular")
+    public ComResponse<List<String>> getNewMostPopularActorPairByGenre(@RequestBody CollaborationQueryVo collaborationQueryVo) {
+        long startTime = System.currentTimeMillis();
+        List<String> response = collaborationMovieService.getTopActorsForTopMovieByGenre(collaborationQueryVo.getGenreName(), collaborationQueryVo.getPeopleNum());
         long endTime = System.currentTimeMillis();
         return ComResponse.success(response, endTime - startTime);
     }
