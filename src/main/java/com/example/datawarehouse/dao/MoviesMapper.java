@@ -53,10 +53,26 @@ public interface MoviesMapper {
             "<if test='maxScore != null'>" +
             "AND m.score &lt;= #{maxScore} " +
             "</if>" +
+            "<if test='minRunTime != null'>" +
+            "AND m.run_time &gt;= #{minRunTime} " +
+            "</if>" +
+            "<if test='maxRunTime != null'>" +
+            "AND m.run_time &lt;= #{maxRunTime} " +
+            "</if>" +
+            "<if test='minCommentNum != null'>" +
+            "AND m.comment_num &gt;= #{minCommentNum} " +
+            "</if>" +
+            "<if test='maxCommentNum != null'>" +
+            "AND m.comment_num &lt;= #{maxCommentNum} " +
+            "</if>" +
             "</where>" +
             "</script>")
     List<MovieVo> getMoviesScore(
             @Param("maxScore") Float maxScore,
-            @Param("minScore") Float minScore
+            @Param("minScore") Float minScore,
+            @Param("minRunTime") Integer minRunTime,
+            @Param("maxRunTime") Integer maxRunTime,
+            @Param("minCommentNum") Integer minCommentNum,
+            @Param("maxCommentNum") Integer maxCommentNum
     );
 }

@@ -120,14 +120,26 @@ public class MovieMultiService {
             }
         }
 
-        if (multiQueryDto.getMinScore() != null || multiQueryDto.getMaxScore() != null) {
+        if (multiQueryDto.getMinScore() != null || multiQueryDto.getMaxScore() != null || multiQueryDto.getMinRunTime() != null || multiQueryDto.getMaxRunTime() != null || multiQueryDto.getMinCommentNum() != null || multiQueryDto.getMaxCommentNum() != null) {
             if (multiQueryDto.getMinScore() == null) {
                 multiQueryDto.setMinScore(0.0f);
             }
             if (multiQueryDto.getMaxScore() == null) {
                 multiQueryDto.setMaxScore(5.0f);
             }
-            List<MovieVo> moviesScore = moviesMapper.getMoviesScore(multiQueryDto.getMaxScore(), multiQueryDto.getMinScore());
+            if (multiQueryDto.getMinRunTime() == null) {
+                multiQueryDto.setMinRunTime(0);
+            }
+            if (multiQueryDto.getMaxRunTime() == null) {
+                multiQueryDto.setMaxRunTime(1000);
+            }
+            if (multiQueryDto.getMinCommentNum() == null) {
+                multiQueryDto.setMinCommentNum(0);
+            }
+            if (multiQueryDto.getMaxCommentNum() == null) {
+                multiQueryDto.setMaxCommentNum(1000000);
+            }
+            List<MovieVo> moviesScore = moviesMapper.getMoviesScore(multiQueryDto.getMaxScore(), multiQueryDto.getMinScore(), multiQueryDto.getMinRunTime(), multiQueryDto.getMaxRunTime(), multiQueryDto.getMinCommentNum(), multiQueryDto.getMaxCommentNum());
             paramNum += 1;
             if (paramNum == 1) {
                 resultMovies = moviesScore;

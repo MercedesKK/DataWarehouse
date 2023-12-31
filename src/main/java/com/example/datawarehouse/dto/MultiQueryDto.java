@@ -28,7 +28,11 @@ public class MultiQueryDto {
     private Float maxScore;
     private Integer ispositive;
     private Integer commentNum;
+    private Integer minCommentNum;
+    private Integer maxCommentNum;
     private Integer runTime;
+    private Integer minRunTime;
+    private Integer maxRunTime;
     private String asin;
 
     private Integer minYear;
