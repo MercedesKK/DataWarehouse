@@ -1,7 +1,10 @@
 package com.example.datawarehouse.controller;
 
+import com.example.datawarehouse.dto.CollaVo;
 import com.example.datawarehouse.dto.CollaborationQueryDto;
+import com.example.datawarehouse.dto.NewCollborationDto;
 import com.example.datawarehouse.service.CollaborationMovieService;
+import com.example.datawarehouse.service.NewCollborationService;
 import com.example.datawarehouse.utils.ComResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +21,8 @@ import java.util.Objects;
 public class CollaborationMovieController {
     @Autowired
     private CollaborationMovieService collaborationMovieService;
+    @Autowired
+    private NewCollborationService newCollborationService;
 
     public static class CollaborationQueryVo {
         private int limit;
@@ -63,5 +68,14 @@ public class CollaborationMovieController {
         long endTime = System.currentTimeMillis();
         return ComResponse.success(response, endTime - startTime);
 
+    }
+
+    @GetMapping("/cooperateSearch")
+    public ComResponse<List<CollaVo>> getCooperateSearch(@RequestBody NewCollborationDto newCollborationDto) {
+        System.out.println(newCollborationDto);
+        long startTime = System.currentTimeMillis();
+        List<CollaVo> response = newCollborationService.findNewCollaboration(newCollborationDto);
+        long endTime = System.currentTimeMillis();
+        return ComResponse.success(response, endTime - startTime);
     }
 }

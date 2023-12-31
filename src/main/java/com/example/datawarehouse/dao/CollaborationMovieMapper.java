@@ -1,6 +1,8 @@
 package com.example.datawarehouse.dao;
 
+import com.example.datawarehouse.dto.CollaVo;
 import com.example.datawarehouse.dto.CollaborationQueryDto;
+import com.example.datawarehouse.dto.NewCollborationDto;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -42,5 +44,77 @@ public interface CollaborationMovieMapper {
             "LIMIT 1")
     Map<String, Object> findMostPopularActorPairByGenre(@Param("genreId") int genreId);
 
+    @Select("SELECT " +
+            " leftCooperationName, " +
+            " rightCooperationName, " +
+            " COUNT(*) AS cooperationTime " +
+            "FROM ( " +
+            " SELECT " +
+            " m.movie_id, " +
+            " CASE " +
+            " WHEN #{cooperateLeftType} = 0 THEN a.actor_name " +
+            " ELSE d.director_name " +
+            " END AS leftCooperationName, " +
+            " CASE " +
+            " WHEN #{cooperateRightType} = 0 THEN a2.actor_name " +
+            " ELSE d2.director_name " +
+            " END AS rightCooperationName " +
+            " FROM " +
+            " movies m " +
+            " LEFT JOIN " +
+            " starring_relation sr ON m.movie_id = sr.movie_id " +
+            " LEFT JOIN " +
+            " actors a ON sr.actor_id = a.actor_id AND #{cooperateLeftType} = 0 " +
+            " LEFT JOIN " +
+            " directors_relation dr ON m.movie_id = dr.movie_id " +
+            " LEFT JOIN " +
+            " directors d ON dr.director_id = d.director_id AND #{cooperateLeftType} = 1 " +
+            " LEFT JOIN " +
+            " starring_relation sr2 ON m.movie_id = sr2.movie_id " +
+            " LEFT JOIN " +
+            " actors a2 ON sr2.actor_id = a2.actor_id AND #{cooperateRightType} = 0 " +
+            " LEFT JOIN " +
+            " directors_relation dr2 ON m.movie_id = dr2.movie_id " +
+            " LEFT JOIN " +
+            " directors d2 ON dr2.director_id = d2.director_id AND #{cooperateRightType} = 1 " +
+            " WHERE " +
+//            " (#{cooperateLeftType} = 0 AND a.actor_name LIKE CONCAT('%', #{cooperateLeftName}, '%')) " +
+            " (#{cooperateLeftType} = 0 AND a.actor_name = #{cooperateLeftName}) " +
+            " OR " +
+//            " (#{cooperateLeftType} = 1 AND d.director_name LIKE CONCAT('%', #{cooperateLeftName}, '%')) " +
+            " (#{cooperateLeftType} = 1 AND d.director_name = #{cooperateLeftName}) " +
+            ") AS sub " + // 这里添加了缺失的闭合括号
+            "GROUP BY " +
+            " leftCooperationName, rightCooperationName " +
+            "HAVING " +
+            " COUNT(*) >= #{minCooperationTimes} ")
+    List<CollaVo> findSpecificCollaborations(@Param("cooperateLeftType") int cooperateLeftType,
+                                             @Param("cooperateRightType") int cooperateRightType,
+                                             @Param("minCooperationTimes") int minCooperationTimes,
+                                             @Param("cooperateLeftName") String cooperateLeftName);
 
+    @Select("SELECT  " +
+            "    a.actor_name AS leftCooperationName, " +
+            "    a2.actor_name AS rightCooperationName, " +
+            "    COUNT(*) AS cooperationTime " +
+            "FROM  " +
+            "    movies m " +
+            "JOIN  " +
+            "    starring_relation sr ON m.movie_id = sr.movie_id " +
+            "JOIN  " +
+            "    actors a ON sr.actor_id = a.actor_id " +
+            "JOIN  " +
+            "    starring_relation sr2 ON m.movie_id = sr2.movie_id " +
+            "JOIN  " +
+            "    actors a2 ON sr2.actor_id = a2.actor_id " +
+            "WHERE  " +
+            "    a.actor_id < a2.actor_id " +
+            "GROUP BY  " +
+            "    leftCooperationName, rightCooperationName " +
+            "HAVING  " +
+            "    cooperationTime >= #{minCooperationTimes} " +
+            "ORDER BY  " +
+            "    cooperationTime DESC " +
+            "LIMIT 50 ")
+    List<CollaVo> nextfindSpecificCollaborations(@Param("minCooperationTimes") int minCooperationTimes);
 }

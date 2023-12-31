@@ -148,6 +148,26 @@ public class MovieMultiService {
             }
         }
 
+        if (multiQueryDto.getActorSupportingName() != null) {
+            List<MovieVo> moviesActorSupporting = actorAndMovieStatisticMapper.multiCountMoviesByActorsupport(multiQueryDto.getActorSupportingName());
+            paramNum += 1;
+            if (paramNum == 1) {
+                resultMovies = moviesActorSupporting;
+            } else {
+                resultMovies.retainAll(moviesActorSupporting);
+            }
+        }
+
+        if (multiQueryDto.getActorStarringName() != null) {
+            List<MovieVo> moviesActorStarring = actorAndMovieStatisticMapper.multiCountMoviesByActorstarring(multiQueryDto.getActorStarringName());
+            paramNum += 1;
+            if (paramNum == 1) {
+                resultMovies = moviesActorStarring;
+            } else {
+                resultMovies.retainAll(moviesActorStarring);
+            }
+        }
+
         if (paramNum == 0) {
             resultMovies = moviesMapper.selectMovies();
         }

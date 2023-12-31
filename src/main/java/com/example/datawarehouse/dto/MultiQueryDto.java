@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 public class MultiQueryDto {
     private String movieName;
     private String directorName;
-//    private String actorStarringName;
-//    private String actorSupportingName;
+    private String actorStarringName;
+    private String actorSupportingName;
     private String actorName;
     private String genreName;
     private String formatName;
