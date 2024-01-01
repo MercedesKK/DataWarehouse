@@ -12,13 +12,13 @@ public interface ActorAndMovieStatisticMapper {
     @Select("SELECT COUNT(*) FROM movies m " +
             "INNER JOIN starring_relation sr ON m.movie_id = sr.movie_id " +
             "INNER JOIN actors a ON sr.actor_id = a.actor_id " +
-            "WHERE a.actor_name LIKE CONCAT('%', #{actorName}, '%')")
+            "WHERE a.actor_name = #{actorName}")
     int countMoviesByActor(@Param("actorName") String actorName);
 
     @Select("SELECT COUNT(*) FROM movies m " +
             "INNER JOIN supporting_relation sr ON m.movie_id = sr.movie_id " +
             "INNER JOIN actors a ON sr.actor_id = a.actor_id " +
-            "WHERE a.actor_name LIKE CONCAT('%', #{actorName}, '%')")
+            "WHERE a.actor_name = #{actorName}")
     int countMoviesByActorSupporting(@Param("actorName") String actorName);
 
     @Select("SELECT m.movie_id AS movieId, m.title AS movieName, m.run_time AS runTime, m.score AS score" +
@@ -26,7 +26,7 @@ public interface ActorAndMovieStatisticMapper {
             " FROM movies m " +
             "INNER JOIN starring_relation sr ON m.movie_id = sr.movie_id " +
             "INNER JOIN actors a ON sr.actor_id = a.actor_id " +
-            "WHERE a.actor_name LIKE CONCAT('%', #{actorName}, '%')")
+            "WHERE a.actor_name = #{actorName}")
     List<MovieVo> multiCountMoviesByActor(@Param("actorName") String actorName);
 
     @Select("SELECT m.movie_id AS movieId, m.title AS movieName, m.run_time AS runTime, m.score AS score" +
@@ -34,7 +34,7 @@ public interface ActorAndMovieStatisticMapper {
             " FROM movies m " +
             "INNER JOIN supporting_relation sr ON m.movie_id = sr.movie_id " +
             "INNER JOIN actors a ON sr.actor_id = a.actor_id " +
-            "WHERE a.actor_name LIKE CONCAT('%', #{actorSupportingName}, '%')")
+            "WHERE a.actor_name = #{actorSupportingName}")
     List<MovieVo> multiCountMoviesByActorsupport(@Param("actorSupportingName") String actorSupportingName);
 
     @Select("SELECT m.movie_id AS movieId, m.title AS movieName, m.run_time AS runTime, m.score AS score" +
@@ -42,6 +42,6 @@ public interface ActorAndMovieStatisticMapper {
             " FROM movies m " +
             "INNER JOIN starring_relation sr ON m.movie_id = sr.movie_id " +
             "INNER JOIN actors a ON sr.actor_id = a.actor_id " +
-            "WHERE a.actor_name LIKE CONCAT('%', #{actorStarringName}, '%')")
+            "WHERE a.actor_name = #{actorStarringName}")
     List<MovieVo> multiCountMoviesByActorstarring(@Param("actorStarringName") String actorStarringName);
 }

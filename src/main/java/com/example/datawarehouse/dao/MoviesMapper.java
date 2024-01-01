@@ -30,7 +30,10 @@ public interface MoviesMapper {
             "AND m.comment_num = #{commentNum} " +
             "</if>" +
             "<if test='asin != null'>" +
-            "AND m.asin LIKE CONCAT('%', #{asin}, '%') " +
+            "AND m.asin = #{asin} " +
+            "</if>" +
+            "<if test='movieName != null'>" +
+            "AND m.title LIKE CONCAT('%', #{movieName}, '%') " +
             "</if>" +
             "</where>" +
             "</script>")
@@ -39,7 +42,8 @@ public interface MoviesMapper {
             @Param("runTime") Integer runTime,
             @Param("ispositive") Integer ispositive,
             @Param("commentNum") Integer commentNum,
-            @Param("asin") String asin
+            @Param("asin") String asin,
+            @Param("movieName") String movieName
     );
 
     @Select("<script>" +

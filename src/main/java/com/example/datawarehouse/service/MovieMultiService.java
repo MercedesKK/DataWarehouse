@@ -72,8 +72,8 @@ public class MovieMultiService {
             }
         }
 
-        if (multiQueryDto.getScore() != null || multiQueryDto.getRunTime() != null || multiQueryDto.getCommentNum() != null || multiQueryDto.getIspositive() != null || multiQueryDto.getAsin() != null) {
-            List<MovieVo> movies = moviesMapper.concreteSelectMovies(multiQueryDto.getScore(), multiQueryDto.getRunTime(), multiQueryDto.getIspositive(), multiQueryDto.getCommentNum(), multiQueryDto.getAsin());
+        if (multiQueryDto.getScore() != null || multiQueryDto.getRunTime() != null || multiQueryDto.getCommentNum() != null || multiQueryDto.getIspositive() != null || multiQueryDto.getAsin() != null || multiQueryDto.getMovieName() != null) {
+            List<MovieVo> movies = moviesMapper.concreteSelectMovies(multiQueryDto.getScore(), multiQueryDto.getRunTime(), multiQueryDto.getIspositive(), multiQueryDto.getCommentNum(), multiQueryDto.getAsin(), multiQueryDto.getMovieName());
             paramNum += 1;
             if (paramNum == 1) {
                 resultMovies = movies;

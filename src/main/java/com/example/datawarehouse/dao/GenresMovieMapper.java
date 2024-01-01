@@ -21,7 +21,7 @@ public interface GenresMovieMapper {
             "FROM movies m " +
             "JOIN genres_relation gr ON m.movie_id = gr.movie_id " +
             "JOIN genres g ON gr.genre_id = g.genre_id " +
-            "WHERE g.genre_name LIKE CONCAT('%', #{genreName}, '%')" +
+            "WHERE g.genre_name = #{genreName}" +
             "LIMIT 20")
     List<MovieVo> multiCountMoviesByGenre(@Param("genreName") String genreName);
 }

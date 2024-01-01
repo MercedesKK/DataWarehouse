@@ -4,6 +4,7 @@ import com.example.datawarehouse.dto.MovieVo;
 import com.example.datawarehouse.dto.MultiQueryDto;
 import com.example.datawarehouse.service.MovieMultiService;
 import com.example.datawarehouse.utils.ComResponse;
+import com.example.datawarehouse.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,10 +20,15 @@ public class multiController {
     private MovieMultiService movieMultiService;
 
     @GetMapping
-    public ComResponse<List<MovieVo>> getMultiQueryResult(@RequestBody MultiQueryDto multiQueryDto) {
-        long startTime = System.currentTimeMillis();
-        List<MovieVo> result = movieMultiService.getMultiQueryResult(multiQueryDto);
-        long endTime = System.currentTimeMillis();
-        return ComResponse.success(result, endTime - startTime);
+    public Result<List<MovieVo>> getMultiQueryResult(@RequestBody MultiQueryDto multiQueryDto) {
+        try {
+            long startTime = System.currentTimeMillis();
+            List<MovieVo> result = movieMultiService.getMultiQueryResult(multiQueryDto);
+            long endTime = System.currentTimeMillis();
+            return Result.success(result, "查询成功", endTime - startTime, result.size());
+        }
+        catch (Exception e) {
+            return Result.fail("查询失败");
+        }
     }
 }

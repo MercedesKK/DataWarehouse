@@ -6,6 +6,7 @@ import com.example.datawarehouse.dto.NewCollborationDto;
 import com.example.datawarehouse.service.CollaborationMovieService;
 import com.example.datawarehouse.service.NewCollborationService;
 import com.example.datawarehouse.utils.ComResponse;
+import com.example.datawarehouse.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,45 +61,54 @@ public class CollaborationMovieController {
         }
     }
 
-    @GetMapping("/actorandactor")
-    public ComResponse<CollaborationQueryDto> getFrequentActorCollaborations(@RequestBody CollaborationQueryVo collaborationQueryVo) {
-        long startTime = System.currentTimeMillis();
-        List<CollaborationQueryDto> response = collaborationMovieService.getFrequentActorCollaborations(collaborationQueryVo.getLimit());
-        long endTime = System.currentTimeMillis();
-        return ComResponse.success(response, endTime - startTime);
-    }
-
-    @GetMapping("/directorandactor")
-    public ComResponse<CollaborationQueryDto> getFrequentDirectorActorCollaborations(@RequestBody CollaborationQueryVo collaborationQueryVo) {
-        long startTime = System.currentTimeMillis();
-        List<CollaborationQueryDto> response = collaborationMovieService.getFrequentDirectorActorCollaborations(collaborationQueryVo.getLimit());
-        long endTime = System.currentTimeMillis();
-        return ComResponse.success(response, endTime - startTime);
-    }
-
-    @GetMapping("/mostpopular")
-    public ComResponse<Map<String, Objects>> getMostPopularActorPairByGenre(@RequestBody CollaborationQueryVo collaborationQueryVo) {
-        long startTime = System.currentTimeMillis();
-        Map<String, Object> response = collaborationMovieService.getMostPopularActorPairByGenre(collaborationQueryVo.getGenreId());
-        long endTime = System.currentTimeMillis();
-        return ComResponse.success(response, endTime - startTime);
-
-    }
-
+//    @GetMapping("/actorandactor")
+//    public Result<CollaborationQueryDto> getFrequentActorCollaborations(@RequestBody CollaborationQueryVo collaborationQueryVo) {
+//        long startTime = System.currentTimeMillis();
+//        List<CollaborationQueryDto> response = collaborationMovieService.getFrequentActorCollaborations(collaborationQueryVo.getLimit());
+//        long endTime = System.currentTimeMillis();
+//        return Result.success(response, "查询成功", endTime - startTime, 1);
+//    }
+//
+//    @GetMapping("/directorandactor")
+//    public ComResponse<CollaborationQueryDto> getFrequentDirectorActorCollaborations(@RequestBody CollaborationQueryVo collaborationQueryVo) {
+//        long startTime = System.currentTimeMillis();
+//        List<CollaborationQueryDto> response = collaborationMovieService.getFrequentDirectorActorCollaborations(collaborationQueryVo.getLimit());
+//        long endTime = System.currentTimeMillis();
+//        return ComResponse.success(response, endTime - startTime);
+//    }
+//
+//    @GetMapping("/mostpopular")
+//    public ComResponse<Map<String, Objects>> getMostPopularActorPairByGenre(@RequestBody CollaborationQueryVo collaborationQueryVo) {
+//        long startTime = System.currentTimeMillis();
+//        Map<String, Object> response = collaborationMovieService.getMostPopularActorPairByGenre(collaborationQueryVo.getGenreId());
+//        long endTime = System.currentTimeMillis();
+//        return ComResponse.success(response, endTime - startTime);
+//
+//    }
+//
     @GetMapping("/cooperateSearch")
-    public ComResponse<List<CollaVo>> getCooperateSearch(@RequestBody NewCollborationDto newCollborationDto) {
-        System.out.println(newCollborationDto);
-        long startTime = System.currentTimeMillis();
-        List<CollaVo> response = newCollborationService.findNewCollaboration(newCollborationDto);
-        long endTime = System.currentTimeMillis();
-        return ComResponse.success(response, endTime - startTime);
+    public Result<List<CollaVo>> getCooperateSearch(@RequestBody NewCollborationDto newCollborationDto) {
+        try {
+            long startTime = System.currentTimeMillis();
+            List<CollaVo> response = newCollborationService.findNewCollaboration(newCollborationDto);
+            long endTime = System.currentTimeMillis();
+            return Result.success(response, "查询成功", endTime - startTime, response.size());
+        }
+        catch (Exception e) {
+            return Result.fail("查询失败");
+        }
     }
 
     @GetMapping("/newmostpopular")
-    public ComResponse<List<String>> getNewMostPopularActorPairByGenre(@RequestBody CollaborationQueryVo collaborationQueryVo) {
+    public Result<List<String>> getNewMostPopularActorPairByGenre(@RequestBody CollaborationQueryVo collaborationQueryVo) {
         long startTime = System.currentTimeMillis();
-        List<String> response = collaborationMovieService.getTopActorsForTopMovieByGenre(collaborationQueryVo.getGenreName(), collaborationQueryVo.getPeopleNum());
-        long endTime = System.currentTimeMillis();
-        return ComResponse.success(response, endTime - startTime);
+        try {
+            List<String> response = collaborationMovieService.getTopActorsForTopMovieByGenre(collaborationQueryVo.getGenreName(), collaborationQueryVo.getPeopleNum());
+            long endTime = System.currentTimeMillis();
+            return Result.success(response, "查询成功", endTime - startTime, response.size());
+        }
+        catch (Exception e) {
+            return Result.fail("查询失败");
+        }
     }
 }

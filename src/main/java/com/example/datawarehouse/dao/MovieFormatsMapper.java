@@ -11,7 +11,7 @@ public interface MovieFormatsMapper {
             "FROM movies m " +
             "JOIN formats_relation fr ON m.movie_id = fr.movie_id " +
             "JOIN formats f ON fr.format_id = f.format_id " +
-            "WHERE f.format_name LIKE CONCAT('%', #{formatName}, '%')")
+            "WHERE f.format_name = #{formatName}")
     int countMovieFormatsByTitle(@Param("formatName") String formatName);
 
     @Select("SELECT m.movie_id AS movieId, m.title AS movieName, m.run_time AS runTime, m.score AS score" +
@@ -19,6 +19,6 @@ public interface MovieFormatsMapper {
             "FROM movies m " +
             "JOIN formats_relation fr ON m.movie_id = fr.movie_id " +
             "JOIN formats f ON fr.format_id = f.format_id " +
-            "WHERE f.format_name LIKE CONCAT('%', #{formatName}, '%')")
+            "WHERE f.format_name = #{formatName}")
     List<MovieVo> multiCountMovieFormatsByTitle(@Param("formatName") String formatName);
 }

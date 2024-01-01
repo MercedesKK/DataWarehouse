@@ -10,7 +10,7 @@ public interface MovieAndDirectorStatisticsMapper {
     @Select("SELECT COUNT(*) FROM movies m " +
             "INNER JOIN directors_relation dr ON m.movie_id = dr.movie_id " +
             "INNER JOIN directors d ON dr.director_id = d.director_id " +
-            "WHERE d.director_name LIKE CONCAT('%', #{directorName}, '%')")
+            "WHERE d.director_name = #{directorName}")
     int countMoviesByDirector(@Param("directorName") String directorName);
 
     @Select("SELECT m.movie_id AS movieId, m.title AS movieName, m.run_time AS runTime, m.score AS score" +
@@ -18,6 +18,6 @@ public interface MovieAndDirectorStatisticsMapper {
             "FROM movies m " +
             "INNER JOIN directors_relation dr ON m.movie_id = dr.movie_id " +
             "INNER JOIN directors d ON dr.director_id = d.director_id " +
-            "WHERE d.director_name LIKE CONCAT('%', #{directorName}, '%')")
+            "WHERE d.director_name = #{directorName}")
     List<MovieVo> multiCountMoviesByDirector(@Param("directorName") String directorName);
 }
